@@ -1,0 +1,26 @@
+<template>
+  <lightning-card title="Account Details">
+    <template if:true={account}>
+      <div style="text-align: center">
+        <p>Name: {account.Name}</p>
+        <p>Account Number: {account.AccountNumber}</p>
+      </div>
+      <template if:true={isManager}>
+        <lightning-button
+          label="Create Product"
+          onclick={handleCreateProduct}
+        ></lightning-button>
+      </template>
+      <lightning-button
+        label="Go to Cart"
+        onclick={handleGoToCart}
+      ></lightning-button>
+    </template>
+    <template if:true={error}>
+      <p>Error loading account details: {error}</p>
+    </template>
+    <template if:true={userError}>
+      <p>Error loading user details: {userError}</p>
+    </template>
+  </lightning-card>
+</template>
