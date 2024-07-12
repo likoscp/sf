@@ -94,7 +94,8 @@ export default class OrderManagement extends LightningElement {
   filterProducts() {
     this.filteredProducts = this.products.filter((product) => {
       return (
-        product.Name.toLowerCase().includes(this.searchKey) &&
+        (product.Name.toLowerCase().includes(this.searchKey) ||
+          product.Description__c.toLowerCase().includes(this.searchKey)) &&
         (this.typeFilter.length === 0 ||
           this.typeFilter.includes(product.Type__c)) &&
         (this.familyFilter.length === 0 ||

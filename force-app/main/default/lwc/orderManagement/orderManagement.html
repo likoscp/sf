@@ -1,114 +1,150 @@
 <template>
-  <lightning-card title="Order Management">
-    <div class="slds-m-around_medium">
-      <lightning-input
-        type="search"
-        label="Search"
-        value={searchKey}
-        onchange={handleSearch}
-      ></lightning-input>
-
-      <div class="slds-m-top_medium">
-        <h3>Filter by Type</h3>
-        <template for:each={typeFilterOptions} for:item="option">
-          <lightning-input
-            key={option.value}
-            type="checkbox"
-            label={option.label}
-            data-name="type"
-            value={option.value}
-            onchange={handleFilterChange}
-          ></lightning-input>
-        </template>
-      </div>
-
-      <div class="slds-m-top_medium">
-        <h3>Filter by Family</h3>
-        <template for:each={familyFilterOptions} for:item="option">
-          <lightning-input
-            key={option.value}
-            type="checkbox"
-            label={option.label}
-            data-name="family"
-            value={option.value}
-            onchange={handleFilterChange}
-          ></lightning-input>
-        </template>
-      </div>
-
-      <div class="slds-m-top_medium">
-        <template if:true={filteredProducts}>
-          <template for:each={filteredProducts} for:item="product">
-            <div key={product.Id} class="slds-box slds-m-around_small">
-              <p>{product.Name}</p>
-              <p>{product.Description}</p>
-              <button data-id={product.Id} onclick={handleDetails}>
-                Details
-              </button>
-              <button data-id={product.Id} onclick={handleAdd}>
-                Add to Cart
-              </button>
+  <div class="slds-grid slds-wrap">
+    <div class="slds-col slds-size_1-of-3">
+      <div class="slds-p-right_medium">
+        <lightning-card>
+          <div class="slds-m-left_large">
+            <strong>Filter by Type</strong>
+            <div class="slds-m-around_small">
+              <template for:each={typeFilterOptions} for:item="option">
+                <lightning-input
+                  key={option.value}
+                  type="checkbox"
+                  label={option.label}
+                  data-name="type"
+                  value={option.value}
+                  onchange={handleFilterChange}
+                ></lightning-input>
+              </template>
             </div>
-          </template>
-        </template>
+            <strong>Filter by Family</strong>
+            <div class="slds-m-around_small">
+              <template for:each={familyFilterOptions} for:item="option">
+                <lightning-input
+                  key={option.value}
+                  type="checkbox"
+                  label={option.label}
+                  data-name="family"
+                  value={option.value}
+                  onchange={handleFilterChange}
+                ></lightning-input>
+              </template>
+            </div>
+          </div>
+        </lightning-card>
       </div>
     </div>
 
-    <template if:true={isModalOpen}>
-      <section
-        role="dialog"
-        tabindex="-1"
-        aria-modal="true"
-        aria-labelledby="modal-heading-01"
-        class="slds-modal slds-fade-in-open"
-      >
-        <div class="slds-modal__container">
-          <button
-            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-            title="Close"
-            onclick={handleCloseModal}
-          >
-            <svg
-              class="slds-button__icon slds-button__icon_large"
-              aria-hidden="true"
-            >
-              <use
-                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"
-              ></use>
-            </svg>
-            <span class="slds-assistive-text">Cancel and close</span>
-          </button>
-
-          <div class="slds-modal__header">
-            <h1
-              id="modal-heading-01"
-              class="slds-modal__title slds-hyphenate"
-              tabindex="-1"
-            >
-              {selectedProduct.Name}
-            </h1>
-          </div>
-
-          <div
-            class="slds-modal__content slds-p-around_medium"
-            id="modal-content-id-1"
-          >
-            <p><strong>Type:</strong> {selectedProduct.Type__c}</p>
-            <p><strong>Family:</strong> {selectedProduct.Family__c}</p>
-            <p><strong>Name:</strong> {selectedProduct.Name}</p>
-            <p>{selectedProduct.Description}</p>
-          </div>
-
-          <div class="slds-modal__footer">
-            <lightning-button
-              variant="neutral"
-              label="Close"
-              onclick={handleCloseModal}
-            ></lightning-button>
-          </div>
+    <div class="slds-col slds-size_2-of-3">
+      <lightning-card>
+        <div class="slds-p-left_large slds-p-right_large">
+          <lightning-input
+            type="search"
+            placeholder="Search products..."
+            value={searchKey}
+            onchange={handleSearch}
+          ></lightning-input>
         </div>
-      </section>
-      <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
-    </template>
-  </lightning-card>
+
+        <div class="slds-m-top_medium">
+          <template if:true={filteredProducts}>
+            <div class="slds-grid slds-wrap">
+              <template for:each={filteredProducts} for:item="product">
+                <div
+                  key={product.Id}
+                  class="slds-col slds-size_1-of-2 slds-p-around_small"
+                >
+                  <div class="slds-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                      <div class="slds-box">
+                        <p><strong>{product.Name}</strong></p>
+                        <p>{product.Description}</p>
+                        <button
+                          class="slds-button slds-button_neutral slds-m-right_small slds-m-top_small"
+                          data-id={product.Id}
+                          onclick={handleDetails}
+                        >
+                          Details
+                        </button>
+                        <button
+                          class="slds-button slds-button_brand"
+                          data-id={product.Id}
+                          onclick={handleAdd}
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+      </lightning-card>
+    </div>
+  </div>
+
+  <template if:true={isModalOpen}>
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-modal="true"
+      aria-labelledby="modal-heading-01"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <button
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          title="Close"
+          onclick={handleCloseModal}
+        >
+          <svg
+            class="slds-button__icon slds-button__icon_large"
+            aria-hidden="true"
+          >
+            <use
+              xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"
+            ></use>
+          </svg>
+          <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+
+        <div class="slds-modal__header">
+          <h1
+            id="modal-heading-01"
+            class="slds-modal__title slds-hyphenate"
+            tabindex="-1"
+          >
+            {selectedProduct.Name}
+          </h1>
+        </div>
+
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-1"
+        >
+          <p><strong>Type:</strong> {selectedProduct.Type__c}</p>
+          <p><strong>Family:</strong> {selectedProduct.Family__c}</p>
+          <p><strong>Name:</strong> {selectedProduct.Name}</p>
+          <p><strong>Description:</strong> {selectedProduct.Description__c}</p>
+        </div>
+
+        <div class="slds-modal__footer">
+          <lightning-button
+            variant="neutral"
+            label="Close"
+            onclick={handleCloseModal}
+          ></lightning-button>
+          <lightning-button
+            variant="neutral"
+            label="Add to Cart"
+            onclick={handleAdd}
+            data-id={selectedProduct.Id}
+          ></lightning-button>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </template>
 </template>
